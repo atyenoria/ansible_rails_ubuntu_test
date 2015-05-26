@@ -1,2 +1,0 @@
-[webservers]
-greenfield.416.bike ansible_ssh_host=107.170.76.94
