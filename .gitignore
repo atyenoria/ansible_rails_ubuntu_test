@@ -1,0 +1,4 @@
+*rsa*
+.vagrant
+.DS_Store
+credentials/*

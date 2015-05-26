@@ -1,0 +1,38 @@
+---
+
+# Confused about Ansible roles?
+# I was too. They're basically just a bit of naming convention magic.
+# http://docs.ansible.com/playbooks_roles.html#roles
+
+
+### Bootstrap the {{ deploy }} user.
+### You must call this playbook with an admin user.
+### (The included Vagrantfile will use -u vagrant. For DigitalOcean, use -u root.)
+
+- hosts: all
+  vars_files:
+    - vars/defaults.yml
+  sudo: True
+  # user: intentionally blank
+  roles:
+    - { role: create-deploy-user, tags: ['create-deploy-user'] }
+
+
+- hosts: all
+  vars_files:
+    - vars/defaults.yml
+    - vars/sampleapp.yml
+  # remote_user: "{{ deploy }}"
+  remote_user: "vagrant"
+  roles:
+    ### Server provisioning roles:
+    - { role: linux-prereqs, tags: ['linux-prereqs'] }
+    - { role: ufw, tags: ['ufw'] }
+    - { role: postgresql, tags: ['postgresql'] }
+    - { role: rbenv, tags: ['rbenv'] }
+    - { role: ruby, tags: ['ruby'] }
+    - { role: papertrail, tags: ['papertrail'] }
+    - { role: nginx-passenger, tags: ['nginx-passenger'] }
+
+    ### Site specific roles:
+    - { role: prepare_site_sampleapp, tags: ['prepare_site_sampleapp'] }
