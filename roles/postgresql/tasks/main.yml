@@ -36,6 +36,8 @@
     - postgresql
     - libpq-dev
     - python-psycopg2
+    - postgresql-contrib #追加
+    - postgresql-common #追加
 
 - name: Copy valid pg_hba.conf
   #template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.3/main/pg_hba.conf
