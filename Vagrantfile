@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :web do |web|
     web.vm.box = "ubuntu-14.04"
     web.vm.network :private_network, ip: "10.33.33.33"
-    web.vm.network :forwarded_port, guest: 80, host: 8080
+    web.vm.network :forwarded_port, guest: 80, host: 8011
 
     web.vm.hostname = "dev.416.bike"
 

@@ -36,6 +36,7 @@
     - pkg-config
     - sqlite3
     - vim
+    - wget
     - zlib1g-dev
     - htop
     - iftop
@@ -47,6 +48,27 @@
     - software-properties-common #add-apt-get-repository
     - mosh #ssh client
     - fail2ban #firewall
+    - ntp
+    - curl
+    - ack-grep
+    - acl
+    - unattended-upgrades
+    - policykit-1
+    - unzip
+    - htop
+    - tmux
+  notify: Start NTP  
+
+# - name: Add Periodic Configuration#??
+  # copy: src=10periodic dest=/etc/apt/apt.conf.d/10periodic owner=root group=root
+
+- name: Add Unattended Upgrade Configuration#??
+  copy: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades owner=root group=root
+  notify:
+   - Restart Unattended Upgrades
+
+
+
 
 - name: Disallow root SSH access
   action: lineinfile dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present

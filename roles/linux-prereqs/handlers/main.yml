@@ -1,3 +1,9 @@
 - name: restart_sshd
   service: name=ssh state=restarted
   sudo: yes
+
+- name: Start NTP
+  service: name=ntp state=started enabled=yes
+
+- name: Restart Unattended Upgrades
+  service: name=unattended-upgrades state=restarted

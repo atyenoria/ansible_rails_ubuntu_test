@@ -1,14 +1,58 @@
 ---
 - name: Install pgbouncer
-  apt: pkg=pgbouncer state=installed update-cache=yes
+  apt: pkg=pgbouncer state=latest update-cache=yes
+  sudo: yes
+
 
 - name: Install pgbouncer config
   action: template src=pgbouncer.ini.j2 dest=/etc/pgbouncer/pgbouncer.ini
           mode=0600 owner={{ pgbouncer.user }} group={{ pgbouncer.group }}
   notify:
     - restart pgbouncer
+  sudo: yes
+
 
 - name: Enable pgbouncer
   lineinfile: dest=/etc/default/pgbouncer regexp=^START=0$ line=START=1
   notify:
     - restart pgbouncer
+  sudo: yes
+
+
+
+
+
+
+
+
+
+
+
+
+# - name: Add PostgreSQL repo key
+#   apt_key: url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc
+#   sudo: yes
+
+# - name: Add PostgreSQL repo
+#   apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
+#   sudo: yes
+
+# - name: Install postgresql, libpq-dev, python-psycopg2
+#   action: apt pkg={{item}} state=latest update_cache=true
+#   sudo: yes
+#   with_items:
+#     - postgresql
+#     - libpq-dev
+#     - python-psycopg2
+#     # - postgresql-contrib #追加
+#     # - postgresql-common #追加
+
+# - name: Copy valid pg_hba.conf
+#   #template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.3/main/pg_hba.conf
+#   template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.4/main/pg_hba.conf
+#   sudo: yes
+
+# - name: Restart PostgreSQL
+#   # NOTE: If conf files were updated here, need to FORCE a RESTART!
+#   service: name=postgresql state=started
+#   sudo: yes

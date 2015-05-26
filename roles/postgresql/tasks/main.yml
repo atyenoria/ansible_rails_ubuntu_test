@@ -36,13 +36,38 @@
     - postgresql
     - libpq-dev
     - python-psycopg2
-    - postgresql-contrib #追加
-    - postgresql-common #追加
+    # - postgresql-contrib #追加
+    # - postgresql-common #追加
 
 - name: Copy valid pg_hba.conf
   #template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.3/main/pg_hba.conf
-  template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.4/main/pg_hba.conf
+  template: src=pg_hba.conf.j2 dest=/etc/postgresql/{{ postgresql.version }}/main/pg_hba.conf
   sudo: yes
+
+
+
+
+- name: Install PostgreSQL config file
+  template: src=postgresql.conf
+            dest=/etc/postgresql/{{ postgresql.version }}/main/postgresql.conf
+            owner={{ postgresql.user }} group={{ postgresql.group }}
+  tags:
+    - configuration
+  sudo: yes  
+
+
+
+- name: Install development header files ## what is this??
+  apt: pkg={{ item }} state=installed update-cache=yes
+  when: postgresql.install_development_headers == true
+  with_items:
+    - libpq-dev
+  tags:
+    - packages
+  sudo: yes  
+
+
+
 
 - name: Restart PostgreSQL
   # NOTE: If conf files were updated here, need to FORCE a RESTART!
